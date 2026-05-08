@@ -31,6 +31,18 @@ function confirmLogin() {
   return false;
 }
 
+function switchTab(mode) {
+  const target = 'tab-' + mode;
+  // Remove active from all tabs
+  document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+  // Add active to the clicked tab
+  document.querySelector(`[data-target="${target}"]`).classList.add('active');
+  // Hide all panels
+  document.querySelectorAll('.auth-panel').forEach(panel => panel.classList.remove('active'));
+  // Show the target panel
+  document.getElementById(target).classList.add('active');
+}
+
 function showLoader(visible) {
   const overlay = document.getElementById('products-loader');
   if (!overlay) return;

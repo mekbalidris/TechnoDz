@@ -38,32 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mdp       = $_POST['mot_de_passe']   ?? '';
         $mdpConf   = $_POST['mdp_confirm']    ?? '';
 
-        // Validation
-        if (empty($nom) || strlen($nom) < 2)
-            $errors[] = 'Le nom doit contenir au moins 2 caractères.';
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL))
-            $errors[] = 'Adresse email invalide.';
-        if (strlen($mdp) < 8)
-            $errors[] = 'Le mot de passe doit contenir au moins 8 caractères.';
-        if (!preg_match('/[A-Z]/', $mdp) || !preg_match('/[0-9]/', $mdp))
-            $errors[] = 'Le mot de passe doit contenir au moins une majuscule et un chiffre.';
-        if ($mdp !== $mdpConf)
-            $errors[] = 'Les mots de passe ne correspondent pas.';
+        $result = createAccount($pdo, $nom, $email, $mdp, $mdpConf);
 
-        // Vérifier doublon email
-        if (empty($errors)) {
-            $check = $pdo->prepare('SELECT id FROM utilisateurs WHERE email = ?');
-            $check->execute([$email]);
-            if ($check->fetch()) $errors[] = 'Cette adresse email est déjà utilisée.';
-        }
-
-        if (empty($errors)) {
-            $hash = password_hash($mdp, PASSWORD_BCRYPT, ['cost' => 12]);
-            $stmt = $pdo->prepare('INSERT INTO utilisateurs (nom, email, mot_de_passe) VALUES (?, ?, ?)');
-            $stmt->execute([$nom, $email, $hash]);
-
+        if (isset($result['success'])) {
             setFlash('success', 'Compte créé avec succès ! Vous pouvez vous connecter.');
             redirect(BASE_URL . '/auth.php');
+        } else {
+            $errors = $result['errors'];
         }
     }
 
@@ -133,6 +114,49 @@ function syncPanierVersBDD(PDO $pdo, int $userId): void {
         ');
         $stmt->execute([$userId, $produitId, $item['quantite']]);
     }
+}
+
+/**
+ * Crée un compte utilisateur si les données sont valides et que l'email n'existe pas déjà
+ */
+function createAccount(PDO $pdo, string $nom, string $email, string $mdp, string $mdpConf): array {
+    $errors = [];
+
+    // Validation
+    if (empty($nom) || strlen($nom) < 2) {
+        $errors[] = 'Le nom doit contenir au moins 2 caractères.';
+    }
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $errors[] = 'Adresse email invalide.';
+    }
+    if (strlen($mdp) < 8) {
+        $errors[] = 'Le mot de passe doit contenir au moins 8 caractères.';
+    }
+    if (!preg_match('/[A-Z]/', $mdp) || !preg_match('/[0-9]/', $mdp)) {
+        $errors[] = 'Le mot de passe doit contenir au moins une majuscule et un chiffre.';
+    }
+    if ($mdp !== $mdpConf) {
+        $errors[] = 'Les mots de passe ne correspondent pas.';
+    }
+
+    // Vérifier doublon email
+    if (empty($errors)) {
+        $check = $pdo->prepare('SELECT id FROM utilisateurs WHERE email = ?');
+        $check->execute([$email]);
+        if ($check->fetch()) {
+            $errors[] = 'Cette adresse email est déjà utilisée.';
+        }
+    }
+
+    // Insertion si pas d'erreurs
+    if (empty($errors)) {
+        $hash = password_hash($mdp, PASSWORD_BCRYPT, ['cost' => 12]);
+        $stmt = $pdo->prepare('INSERT INTO utilisateurs (nom, email, mot_de_passe) VALUES (?, ?, ?)');
+        $stmt->execute([$nom, $email, $hash]);
+        return ['success' => true];
+    }
+
+    return ['errors' => $errors];
 }
 
 // Rediriger si déjà connecté
@@ -275,5 +299,19 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 
 </div><!-- /.auth-page -->
+
+<script>
+function switchTab(mode) {
+    const target = 'tab-' + mode;
+
+    document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.auth-panel').forEach(panel => panel.classList.remove('active'));
+
+    const tabButton = document.querySelector(`[data-target="${target}"]`);
+    const panel = document.getElementById(target);
+    if (tabButton) tabButton.classList.add('active');
+    if (panel) panel.classList.add('active');
+}
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
