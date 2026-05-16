@@ -43,9 +43,9 @@ $cart = isset($_SESSION['cart']) && is_array($_SESSION['cart']) ? $_SESSION['car
 if (empty($cart)) {
     include __DIR__ . '/includes/header.php';
     ?>
-    <h1>Checkout</h1>
-    <p>Your cart is empty.</p>
-    <p><a href="<?= h(BASE_URL) ?>/index.php">&larr; Continue shopping</a></p>
+    <h1><i class="bi bi-cart3"></i> Checkout</h1>
+    <p class="empty-state"><i class="bi bi-cart-x"></i> Your cart is empty.</p>
+    <p><a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Continue shopping</a></p>
     <?php
     include __DIR__ . '/includes/footer.php';
     return;
@@ -99,9 +99,9 @@ foreach ($cart as $pid => $qty) {
 if (empty($lines)) {
     include __DIR__ . '/includes/header.php';
     ?>
-    <h1>Checkout</h1>
-    <p>Your cart is empty.</p>
-    <p><a href="<?= h(BASE_URL) ?>/index.php">&larr; Continue shopping</a></p>
+    <h1><i class="bi bi-cart3"></i> Checkout</h1>
+    <p class="empty-state"><i class="bi bi-cart-x"></i> Your cart is empty.</p>
+    <p><a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Continue shopping</a></p>
     <?php
     include __DIR__ . '/includes/footer.php';
     return;
@@ -165,7 +165,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include __DIR__ . '/includes/header.php';
 ?>
 
-<h1>Checkout</h1>
+<h1><i class="bi bi-credit-card"></i> Checkout</h1>
 
 <table class="cart-table">
     <thead>
@@ -192,10 +192,9 @@ include __DIR__ . '/includes/header.php';
 
 <p class="cart-total"><strong>Total: <?= h(money($total)) ?></strong></p>
 
-<form method="post" action="<?= h(BASE_URL) ?>/checkout.php">
-    <button type="submit" class="btn btn-primary">Place order</button>
-    &nbsp;
-    <a href="<?= h(BASE_URL) ?>/cart.php">&larr; Back to cart</a>
+<form method="post" action="<?= h(BASE_URL) ?>/checkout.php" style="display:flex;gap:.5rem;flex-wrap:wrap;">
+    <button type="submit" class="btn btn-primary"><i class="bi bi-bag-check-fill"></i> Place order</button>
+    <a href="<?= h(BASE_URL) ?>/cart.php" class="btn"><i class="bi bi-arrow-left"></i> Back to cart</a>
 </form>
 
 <?php

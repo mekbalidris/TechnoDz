@@ -26,9 +26,12 @@ $cart = isset($_SESSION['cart']) && is_array($_SESSION['cart']) ? $_SESSION['car
 if (empty($cart)) {
     include __DIR__ . '/includes/header.php';
     ?>
-    <h1>Your Cart</h1>
-    <p>Your cart is empty.</p>
-    <p><a href="<?= h(BASE_URL) ?>/index.php">&larr; Continue shopping</a></p>
+    <h1><i class="bi bi-cart3"></i> Your Cart</h1>
+    <p class="empty-state">
+        <i class="bi bi-cart-x"></i>
+        Your cart is empty.
+    </p>
+    <p><a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Continue shopping</a></p>
     <?php
     include __DIR__ . '/includes/footer.php';
     return;
@@ -62,7 +65,7 @@ $total = 0.0;
 include __DIR__ . '/includes/header.php';
 ?>
 
-<h1>Your Cart</h1>
+<h1><i class="bi bi-cart3"></i> Your Cart</h1>
 
 <table class="cart-table">
     <thead>
@@ -112,7 +115,7 @@ include __DIR__ . '/includes/header.php';
                         min="1"
                         value="<?= h($qty) ?>"
                         class="cart-qty-input">
-                    <button type="submit" class="btn">Update</button>
+                    <button type="submit" class="btn"><i class="bi bi-arrow-repeat"></i> Update</button>
                 </form>
             </td>
             <td><?= h(money($line_total)) ?></td>
@@ -120,7 +123,7 @@ include __DIR__ . '/includes/header.php';
                 <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php" class="cart-remove-form">
                     <input type="hidden" name="action" value="remove">
                     <input type="hidden" name="product_id" value="<?= h($pid) ?>">
-                    <button type="submit" class="btn btn-danger">Remove</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Remove</button>
                 </form>
             </td>
         </tr>
@@ -131,9 +134,8 @@ include __DIR__ . '/includes/header.php';
 <p class="cart-total"><strong>Total: <?= h(money($total)) ?></strong></p>
 
 <p>
-    <a href="<?= h(BASE_URL) ?>/index.php">&larr; Continue shopping</a>
-    &nbsp;|&nbsp;
-    <a href="<?= h(BASE_URL) ?>/checkout.php" class="btn btn-primary">Proceed to checkout</a>
+    <a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Continue shopping</a>
+    <a href="<?= h(BASE_URL) ?>/checkout.php" class="btn btn-primary"><i class="bi bi-credit-card"></i> Proceed to checkout</a>
 </p>
 
 <?php

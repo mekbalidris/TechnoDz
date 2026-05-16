@@ -50,24 +50,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 require __DIR__ . '/includes/header.php';
 ?>
-<h1>Login</h1>
+<h1><i class="bi bi-box-arrow-in-right"></i> Login</h1>
 
 <?php if ($error !== ''): ?>
-    <p class="flash err"><?= h($error) ?></p>
+    <p class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> <?= h($error) ?></p>
 <?php endif; ?>
 
 <form method="post" action="<?= h(BASE_URL) ?>/login.php" class="auth-form">
     <label>
-        Email
+        <i class="bi bi-envelope"></i> Email
         <input type="email" name="email" required value="<?= h($email) ?>">
     </label>
     <label>
-        Password
+        <i class="bi bi-lock"></i> Password
         <input type="password" name="password" required>
     </label>
-    <button type="submit">Login</button>
+    <button type="submit"><i class="bi bi-box-arrow-in-right"></i> Login</button>
 </form>
 
-<p>Don't have an account? <a href="<?= h(BASE_URL) ?>/register.php">Register</a>.</p>
+<p>Don't have an account? <a href="<?= h(BASE_URL) ?>/register.php"><i class="bi bi-person-plus"></i> Register</a>.</p>
 
 <?php require __DIR__ . '/includes/footer.php'; ?>

@@ -64,23 +64,23 @@ $list->close();
 require __DIR__ . '/includes/admin_header.php';
 ?>
 
-<h1>Categories</h1>
+<h1><i class="bi bi-tags"></i> Categories</h1>
 
 <?php if ($error !== ''): ?>
-    <p class="flash err"><?= h($error) ?></p>
+    <p class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> <?= h($error) ?></p>
 <?php endif; ?>
 <?php if ($success !== ''): ?>
-    <p class="flash ok"><?= h($success) ?></p>
+    <p class="flash ok"><i class="bi bi-check-circle-fill"></i> <?= h($success) ?></p>
 <?php endif; ?>
 
-<h2>Add category</h2>
+<h2><i class="bi bi-plus-circle"></i> Add category</h2>
 <form method="post" action="<?= BASE_URL ?>/admin/categories.php" class="form-inline">
     <label for="add_name">Name</label>
     <input type="text" id="add_name" name="add_name" required maxlength="80">
-    <button type="submit" class="btn btn-primary">Add</button>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add</button>
 </form>
 
-<h2>Existing categories</h2>
+<h2><i class="bi bi-list-ul"></i> Existing categories</h2>
 <?php if (empty($categories)): ?>
     <p>No categories yet.</p>
 <?php else: ?>
@@ -103,7 +103,7 @@ require __DIR__ . '/includes/admin_header.php';
                               class="js-confirm-delete"
                               style="display:inline">
                             <input type="hidden" name="delete_id" value="<?= h($cat['id']) ?>">
-                            <button type="submit" class="btn btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
                         </form>
                     </td>
                 </tr>

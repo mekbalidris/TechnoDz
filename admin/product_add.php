@@ -127,10 +127,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include __DIR__ . '/includes/admin_header.php';
 ?>
 
-<h1>Add Product</h1>
+<h1><i class="bi bi-plus-circle"></i> Add Product</h1>
 
 <?php if ($error !== ''): ?>
-    <p class="flash err"><?= h($error) ?></p>
+    <p class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> <?= h($error) ?></p>
 <?php endif; ?>
 
 <form method="post"
@@ -171,8 +171,8 @@ include __DIR__ . '/includes/admin_header.php';
         <input type="file" name="image" accept="image/png,image/jpeg,image/webp" required>
     </label>
 
-    <button type="submit" class="btn btn-primary">Add Product</button>
-    <a href="<?= h(BASE_URL) ?>/admin/products.php" class="btn">Cancel</a>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add Product</button>
+    <a href="<?= h(BASE_URL) ?>/admin/products.php" class="btn"><i class="bi bi-x-lg"></i> Cancel</a>
 </form>
 
 <?php include __DIR__ . '/includes/admin_footer.php'; ?>

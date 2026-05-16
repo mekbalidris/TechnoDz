@@ -70,6 +70,7 @@ if (isset($conn) && $conn instanceof mysqli) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Nexus Shop</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="<?= h(BASE_URL) ?>/assets/css/style.css">
 </head>
 <body>
@@ -78,36 +79,32 @@ if (isset($conn) && $conn instanceof mysqli) {
         <a class="brand" href="<?= h(BASE_URL) ?>/index.php">Nexus Shop</a>
 
         <nav class="site-nav">
-            <a href="<?= h(BASE_URL) ?>/index.php">Home</a>
+            <a href="<?= h(BASE_URL) ?>/index.php"><i class="bi bi-house-door"></i> Home</a>
             <a href="<?= h(BASE_URL) ?>/cart.php">
-                Cart<?php if ($cart_count > 0): ?> (<?= h($cart_count) ?>)<?php endif; ?>
+                <i class="bi bi-cart3"></i> Cart<?php if ($cart_count > 0): ?> <span class="cart-badge"><?= h($cart_count) ?></span><?php endif; ?>
             </a>
             <?php if (is_logged_in()): ?>
-                <span class="nav-user">Hello <?= h(header_current_username()) ?></span>
-                <a href="<?= h(BASE_URL) ?>/logout.php">Logout</a>
+                <span class="nav-user"><i class="bi bi-person-circle"></i> <?= h(header_current_username()) ?></span>
+                <a href="<?= h(BASE_URL) ?>/logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>
             <?php else: ?>
-                <a href="<?= h(BASE_URL) ?>/login.php">Login</a>
-                <a href="<?= h(BASE_URL) ?>/register.php">Register</a>
+                <a href="<?= h(BASE_URL) ?>/login.php"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+                <a href="<?= h(BASE_URL) ?>/register.php"><i class="bi bi-person-plus"></i> Register</a>
             <?php endif; ?>
         </nav>
 
         <form class="search-form" method="get" action="<?= h(BASE_URL) ?>/index.php">
-            <input
-                type="text"
-                name="q"
-                placeholder="Search products"
-                value="<?= h($search_q) ?>">
-            <select name="category_id">
-                <option value="">All categories</option>
-                <?php foreach ($categories as $cat): ?>
-                    <option
-                        value="<?= h($cat['id']) ?>"
-                        <?= ((int)$cat['id'] === $selected_category_id) ? 'selected' : '' ?>>
-                        <?= h($cat['name']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-            <button type="submit">Search</button>
+            <div class="search-input-wrap">
+                <i class="bi bi-search search-icon"></i>
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Search products"
+                    value="<?= h($search_q) ?>">
+            </div>
+            <?php if ($selected_category_id > 0): ?>
+                <input type="hidden" name="category_id" value="<?= h($selected_category_id) ?>">
+            <?php endif; ?>
+            <button type="submit"><i class="bi bi-search"></i> Search</button>
         </form>
     </div>
 </header>

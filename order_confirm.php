@@ -39,8 +39,8 @@ $stmt->close();
 if (!$order) {
     include __DIR__ . '/includes/header.php';
     ?>
-    <div class="flash err">Order not found</div>
-    <p><a href="<?= h(BASE_URL) ?>/index.php">&larr; Back to shop</a></p>
+    <div class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> Order not found</div>
+    <p><a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Back to shop</a></p>
     <?php
     include __DIR__ . '/includes/footer.php';
     return;
@@ -67,11 +67,11 @@ $items_stmt->close();
 include __DIR__ . '/includes/header.php';
 ?>
 
-<h1>Order Confirmation</h1>
+<h1><i class="bi bi-bag-check-fill"></i> Order Confirmation</h1>
 
-<p class="flash ok">Thank you! Your order has been placed.</p>
+<p class="flash ok"><i class="bi bi-check-circle-fill"></i> Thank you! Your order has been placed.</p>
 
-<p>Order ID: #<?= h($order['id']) ?></p>
+<p><strong>Order ID:</strong> #<?= h($order['id']) ?></p>
 
 <table class="cart-table">
     <thead>
@@ -104,7 +104,7 @@ include __DIR__ . '/includes/header.php';
     </tfoot>
 </table>
 
-<p><a href="<?= h(BASE_URL) ?>/index.php">&larr; Back to shop</a></p>
+<p><a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Back to shop</a></p>
 
 <?php
 include __DIR__ . '/includes/footer.php';

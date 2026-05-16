@@ -35,9 +35,9 @@ $stmt->close();
 
 if (!$product) {
     include __DIR__ . '/includes/admin_header.php';
-    echo '<h1>Edit Product</h1>';
-    echo '<p class="flash err">Product not found</p>';
-    echo '<p><a href="' . h(BASE_URL) . '/admin/products.php" class="btn">Back to products</a></p>';
+    echo '<h1><i class="bi bi-pencil-square"></i> Edit Product</h1>';
+    echo '<p class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> Product not found</p>';
+    echo '<p><a href="' . h(BASE_URL) . '/admin/products.php" class="btn"><i class="bi bi-arrow-left"></i> Back to products</a></p>';
     include __DIR__ . '/includes/admin_footer.php';
     exit;
 }
@@ -162,10 +162,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include __DIR__ . '/includes/admin_header.php';
 ?>
 
-<h1>Edit Product</h1>
+<h1><i class="bi bi-pencil-square"></i> Edit Product</h1>
 
 <?php if ($error !== ''): ?>
-    <p class="flash err"><?= h($error) ?></p>
+    <p class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> <?= h($error) ?></p>
 <?php endif; ?>
 
 <form method="post"
@@ -207,8 +207,8 @@ include __DIR__ . '/includes/admin_header.php';
            accept="image/png,image/jpeg,image/webp">
 
     <p style="margin-top:1rem">
-        <button type="submit" class="btn btn-primary">Save changes</button>
-        <a href="<?= h(BASE_URL) ?>/admin/products.php" class="btn">Cancel</a>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save changes</button>
+        <a href="<?= h(BASE_URL) ?>/admin/products.php" class="btn"><i class="bi bi-x-lg"></i> Cancel</a>
     </p>
 </form>
 

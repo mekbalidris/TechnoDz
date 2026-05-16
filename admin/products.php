@@ -32,10 +32,10 @@ $stmt->close();
 include __DIR__ . '/includes/admin_header.php';
 ?>
 
-<h1>Products</h1>
+<h1><i class="bi bi-box-seam"></i> Products</h1>
 
 <p>
-    <a href="<?= h(BASE_URL) ?>/admin/product_add.php" class="btn btn-primary">Add product</a>
+    <a href="<?= h(BASE_URL) ?>/admin/product_add.php" class="btn btn-primary"><i class="bi bi-plus-circle"></i> Add product</a>
 </p>
 
 <?php if (empty($products)): ?>
@@ -67,7 +67,7 @@ include __DIR__ . '/includes/admin_header.php';
                     <td><?= $p['category_name'] !== null ? h($p['category_name']) : '&mdash;' ?></td>
                     <td><?= h(money($p['price'])) ?></td>
                     <td>
-                        <a href="<?= h(BASE_URL) ?>/admin/product_edit.php?id=<?= h($p['id']) ?>" class="btn">Edit</a>
+                        <a href="<?= h(BASE_URL) ?>/admin/product_edit.php?id=<?= h($p['id']) ?>" class="btn"><i class="bi bi-pencil-square"></i> Edit</a>
                         <form
                             method="post"
                             action="<?= h(BASE_URL) ?>/admin/product_delete.php"
@@ -75,7 +75,7 @@ include __DIR__ . '/includes/admin_header.php';
                             style="display:inline"
                             onsubmit="return confirm('Delete this product?');">
                             <input type="hidden" name="id" value="<?= h($p['id']) ?>">
-                            <button type="submit" class="btn">Delete</button>
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Delete</button>
                         </form>
                     </td>
                 </tr>

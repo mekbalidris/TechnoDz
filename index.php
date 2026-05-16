@@ -61,16 +61,58 @@ while ($row = $res->fetch_assoc()) {
 $stmt->close();
 
 include __DIR__ . '/includes/header.php';
+
+// Load categories for the filter strip below the hero.
+$filter_categories = [];
+$cat_q = $conn->query('SELECT id, name FROM categories ORDER BY name');
+if ($cat_q) {
+    while ($row = $cat_q->fetch_assoc()) {
+        $filter_categories[] = $row;
+    }
+    $cat_q->free();
+}
 ?>
 
 <?php if ($q === '' && $category_id === 0): ?>
-    <section class="hero">
-        <h1>Build your dream rig.</h1>
-        <p>Top-tier GPUs, CPUs, peripherals and more. Browse the catalog, drop what you love into the cart, and check out in seconds.</p>
+    <section class="hero hero-split">
+        <div class="hero-copy">
+            <span class="hero-eyebrow"><i class="bi bi-lightning-charge-fill"></i> Build smarter</span>
+            <h1>Power your next build at <span class="hero-accent">Nexus Shop</span>.</h1>
+            <p>GPUs, CPUs, peripherals and more from the brands you trust. Discover today's deals, drop them into your cart, and check out in seconds.</p>
+            <div class="hero-actions">
+                <a href="#products" class="btn btn-primary"><i class="bi bi-grid-fill"></i> Shop now</a>
+                <a href="<?= h(BASE_URL) ?>/cart.php" class="btn btn-light"><i class="bi bi-cart3"></i> View cart</a>
+            </div>
+        </div>
+        <div class="hero-art">
+            <img src="<?= h(product_image_url('rtx5090.png')) ?>" alt="Featured GPU">
+        </div>
     </section>
 <?php else: ?>
-    <h1>Products</h1>
+    <h1 id="products"><i class="bi bi-grid-fill"></i> Products</h1>
 <?php endif; ?>
+
+<!-- Category filter strip (replaces the dropdown that used to live in the header) -->
+<section class="filter-strip" id="products">
+    <div class="filter-strip-label">
+        <i class="bi bi-funnel-fill"></i> <span>Categories</span>
+    </div>
+    <div class="filter-chips">
+        <a class="chip <?= $category_id === 0 ? 'is-active' : '' ?>"
+           href="<?= h(BASE_URL) ?>/index.php<?= $q !== '' ? '?q=' . urlencode($q) : '' ?>">
+            All
+        </a>
+        <?php foreach ($filter_categories as $fc):
+            $url = BASE_URL . '/index.php?category_id=' . (int)$fc['id'];
+            if ($q !== '') { $url .= '&q=' . urlencode($q); }
+        ?>
+            <a class="chip <?= $category_id === (int)$fc['id'] ? 'is-active' : '' ?>"
+               href="<?= h($url) ?>">
+                <?= h($fc['name']) ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
+</section>
 
 <?php if ($q !== '' || $category_id > 0): ?>
     <p class="active-filters">
@@ -118,7 +160,7 @@ include __DIR__ . '/includes/header.php';
                 <?php endif; ?>
                 <p class="desc"><?= h($short_desc) ?></p>
                 <p class="price"><?= h(money($p['price'])) ?></p>
-                <a class="btn btn-primary" href="<?= h(BASE_URL) ?>/product.php?id=<?= (int)$p['id'] ?>">View</a>
+                <a class="btn btn-primary" href="<?= h(BASE_URL) ?>/product.php?id=<?= (int)$p['id'] ?>"><i class="bi bi-eye"></i> View</a>
             </div>
         <?php endforeach; ?>
     </div>

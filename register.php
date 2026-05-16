@@ -63,32 +63,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include __DIR__ . '/includes/header.php';
 ?>
 
-<h1>Register</h1>
+<h1><i class="bi bi-person-plus"></i> Register</h1>
 
 <?php if ($error !== ''): ?>
-    <div class="flash err"><?= h($error) ?></div>
+    <div class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> <?= h($error) ?></div>
 <?php endif; ?>
 
 <form method="post" action="<?= h(BASE_URL) ?>/register.php" class="auth-form">
     <label>
-        Username
+        <i class="bi bi-person"></i> Username
         <input type="text" name="username" value="<?= h($username) ?>" required>
     </label>
 
     <label>
-        Email
+        <i class="bi bi-envelope"></i> Email
         <input type="email" name="email" value="<?= h($email) ?>" required>
     </label>
 
     <label>
-        Password
+        <i class="bi bi-lock"></i> Password
         <input type="password" name="password" required>
     </label>
 
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-person-plus"></i> Register</button>
 </form>
 
-<p>Already have an account? <a href="<?= h(BASE_URL) ?>/login.php">Log in</a>.</p>
+<p>Already have an account? <a href="<?= h(BASE_URL) ?>/login.php"><i class="bi bi-box-arrow-in-right"></i> Log in</a>.</p>
 
 <?php
 include __DIR__ . '/includes/footer.php';

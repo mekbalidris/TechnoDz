@@ -41,20 +41,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include __DIR__ . '/includes/admin_header.php';
 ?>
 
-<h1>Admin Login</h1>
+<h1><i class="bi bi-shield-lock"></i> Admin Login</h1>
 
 <?php if ($error !== ''): ?>
-    <p class="flash err"><?= h($error) ?></p>
+    <p class="flash err"><i class="bi bi-exclamation-triangle-fill"></i> <?= h($error) ?></p>
 <?php endif; ?>
 
 <form method="post" action="<?= BASE_URL ?>/admin/login.php" class="auth-form">
-    <label for="username">Username</label>
+    <label for="username"><i class="bi bi-person"></i> Username</label>
     <input type="text" id="username" name="username" value="<?= h($username) ?>" required autofocus>
 
-    <label for="password">Password</label>
+    <label for="password"><i class="bi bi-lock"></i> Password</label>
     <input type="password" id="password" name="password" required>
 
-    <button type="submit" class="btn btn-primary">Login</button>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i> Login</button>
 
     <p class="hint"><small>Default: admin / admin123</small></p>
 </form>
