@@ -1,0 +1,94 @@
+<?php
+require_once __DIR__ . '/includes/db.php';
+require_once __DIR__ . '/includes/auth.php';
+require_once __DIR__ . '/includes/cart.php';
+require_once __DIR__ . '/includes/helpers.php';
+
+cart_load();
+
+// Form values to render. Username/email are preserved on re-render after a
+// failed POST so the visitor doesn't have to re-type them; password is
+// deliberately NOT preserved (Req 4.1, 4.2).
+$username = '';
+$email    = '';
+$error    = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim((string)($_POST['username'] ?? ''));
+    $email    = trim((string)($_POST['email'] ?? ''));
+    $pwd      = (string)($_POST['password'] ?? '');
+
+    // Required-field + format validation. Keep messages generic enough to
+    // re-render once and let the user fix any of them.
+    if ($username === '' || $email === '' || $pwd === '') {
+        $error = 'All fields are required';
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Please enter a valid email address';
+    } elseif (strlen($pwd) < 6) {
+        $error = 'Password must be at least 6 characters';
+    } else {
+        // Duplicate check: a single prepared SELECT with bound strings
+        // covers both username and email collisions (Req 4.2). Both columns
+        // are also UNIQUE in the schema, so this is belt + suspenders.
+        $stmt = $conn->prepare(
+            'SELECT id FROM users WHERE username = ? OR email = ? LIMIT 1'
+        );
+        $stmt->bind_param('ss', $username, $email);
+        $stmt->execute();
+        $stmt->store_result();
+
+        if ($stmt->num_rows > 0) {
+            $error = 'Username or email already registered';
+            $stmt->close();
+        } else {
+            $stmt->close();
+
+            // password_hash with PASSWORD_DEFAULT is the bcrypt-by-default
+            // path PHP recommends; never store plaintext (Req 4.1, 11.2).
+            $hash = password_hash($pwd, PASSWORD_DEFAULT);
+
+            $ins = $conn->prepare(
+                'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)'
+            );
+            $ins->bind_param('sss', $username, $email, $hash);
+            $ins->execute();
+            $ins->close();
+
+            // Send the new user to the login page to authenticate.
+            redirect('/login.php');
+        }
+    }
+}
+
+include __DIR__ . '/includes/header.php';
+?>
+
+<h1>Register</h1>
+
+<?php if ($error !== ''): ?>
+    <div class="flash err"><?= h($error) ?></div>
+<?php endif; ?>
+
+<form method="post" action="<?= h(BASE_URL) ?>/register.php" class="auth-form">
+    <label>
+        Username
+        <input type="text" name="username" value="<?= h($username) ?>" required>
+    </label>
+
+    <label>
+        Email
+        <input type="email" name="email" value="<?= h($email) ?>" required>
+    </label>
+
+    <label>
+        Password
+        <input type="password" name="password" required>
+    </label>
+
+    <button type="submit" class="btn btn-primary">Register</button>
+</form>
+
+<p>Already have an account? <a href="<?= h(BASE_URL) ?>/login.php">Log in</a>.</p>
+
+<?php
+include __DIR__ . '/includes/footer.php';
