@@ -65,7 +65,6 @@ if ($cat_q) {
 <?php if ($q === '' && $category_id === 0): ?>
     <section class="hero hero-split">
         <div class="hero-copy">
-            <span class="hero-eyebrow"><i class="bi bi-lightning-charge-fill"></i> Build smarter</span>
             <h1>Power your next build at <span class="hero-accent">TechnoDz</span></h1>
             <p>GPUs, CPUs, peripherals and more from the brands you trust. Discover today's deals, drop them into your cart, and check out in seconds.</p>
             <div class="hero-actions">

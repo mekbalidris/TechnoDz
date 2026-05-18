@@ -62,7 +62,11 @@ if (isset($conn) && $conn instanceof mysqli) {
     <div class="container site-header-inner">
         <a class="brand" href="<?= h(BASE_URL) ?>/index.php">TechnoDz</a>
 
-        <nav class="site-nav">
+        <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>
+            <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="site-nav" data-nav>
             <a href="<?= h(BASE_URL) ?>/index.php"><i class="bi bi-house-door"></i> Home</a>
             <a href="<?= h(BASE_URL) ?>/cart.php">
                 <i class="bi bi-cart3"></i> Cart<span class="cart-badge" data-cart-badge<?= $cart_count > 0 ? '' : ' hidden' ?>><?= h($cart_count) ?></span>

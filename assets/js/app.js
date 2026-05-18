@@ -89,6 +89,33 @@
     }
 
     document.addEventListener('DOMContentLoaded', function () {
+        // hamburger toggle for the mobile nav
+        var toggle = document.querySelector('[data-nav-toggle]');
+        var nav    = document.querySelector('[data-nav]');
+        if (toggle && nav) {
+            toggle.addEventListener('click', function (event) {
+                event.stopPropagation();
+                var open = nav.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+
+            // close when clicking outside the nav
+            document.addEventListener('click', function (event) {
+                if (!nav.classList.contains('is-open')) return;
+                if (nav.contains(event.target) || toggle.contains(event.target)) return;
+                nav.classList.remove('is-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            });
+
+            // close when a nav link is clicked
+            nav.addEventListener('click', function (event) {
+                if (event.target.closest('a')) {
+                    nav.classList.remove('is-open');
+                    toggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        }
+
         document.querySelectorAll('form.js-confirm-delete').forEach(function (form) {
             form.addEventListener('submit', function (event) {
                 if (!window.confirm('Are you sure you want to delete this?')) {

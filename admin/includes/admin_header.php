@@ -8,9 +8,12 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/style.css?v=<?= @filemtime(__DIR__ . '/../../assets/css/style.css') ?: time() ?>">
 </head>
 <body>
-    <nav class="site-nav">
+    <nav class="site-nav admin-nav">
         <a class="brand" href="<?= BASE_URL ?>/admin/index.php"><?= h('TechnoDz — Admin') ?></a>
-        <ul class="nav-links">
+        <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false" data-nav-toggle>
+            <i class="bi bi-list"></i>
+        </button>
+        <ul class="nav-links" data-nav>
             <li><a href="<?= BASE_URL ?>/admin/index.php"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
             <li><a href="<?= BASE_URL ?>/admin/products.php"><i class="bi bi-box-seam"></i> Products</a></li>
             <li><a href="<?= BASE_URL ?>/admin/categories.php"><i class="bi bi-tags"></i> Categories</a></li>
