@@ -765,3 +765,51 @@ form label i { margin-right: 0.35rem; }
 
 /* The category pill on product detail no longer says "Category:" plain */
 .product-category i { margin-right: 0.3rem; }
+
+
+/* ===================================================================
+   AJAX UI: toast notifier + badge pulse
+   =================================================================== */
+
+.toast-container {
+    position: fixed;
+    bottom: 1.25rem;
+    right: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 1000;
+    pointer-events: none;
+}
+.toast {
+    pointer-events: auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--ok);
+    color: var(--text);
+    padding: 0.7rem 1rem;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-lg);
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 220px;
+    max-width: 360px;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.toast i { font-size: 1.05rem; color: var(--ok); }
+.toast-err { border-left-color: var(--err); }
+.toast-err i { color: var(--err); }
+.toast-show { transform: translateX(0); opacity: 1; }
+
+/* Cart badge pulse on update */
+@keyframes cart-badge-pulse-kf {
+    0%   { transform: translateY(-1px) scale(1); }
+    50%  { transform: translateY(-1px) scale(1.25); }
+    100% { transform: translateY(-1px) scale(1); }
+}
+.cart-badge-pulse { animation: cart-badge-pulse-kf 0.4s ease; }
+[data-cart-badge][hidden] { display: none; }

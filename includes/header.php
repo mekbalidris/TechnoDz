@@ -81,7 +81,7 @@ if (isset($conn) && $conn instanceof mysqli) {
         <nav class="site-nav">
             <a href="<?= h(BASE_URL) ?>/index.php"><i class="bi bi-house-door"></i> Home</a>
             <a href="<?= h(BASE_URL) ?>/cart.php">
-                <i class="bi bi-cart3"></i> Cart<?php if ($cart_count > 0): ?> <span class="cart-badge"><?= h($cart_count) ?></span><?php endif; ?>
+                <i class="bi bi-cart3"></i> Cart<span class="cart-badge" data-cart-badge<?= $cart_count > 0 ? '' : ' hidden' ?>><?= h($cart_count) ?></span>
             </a>
             <?php if (is_logged_in()): ?>
                 <span class="nav-user"><i class="bi bi-person-circle"></i> <?= h(header_current_username()) ?></span>

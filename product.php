@@ -45,7 +45,7 @@ include __DIR__ . '/includes/header.php';
             <p class="product-price"><?= h(money($product['price'])) ?></p>
             <p class="product-description"><?= nl2br(h($product['description'])) ?></p>
 
-            <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php">
+            <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php" class="js-add-to-cart">
                 <input type="hidden" name="action" value="add">
                 <input type="hidden" name="product_id" value="<?= h($product['id']) ?>">
                 <button type="submit" class="btn btn-primary"><i class="bi bi-cart-plus"></i> Add to cart</button>

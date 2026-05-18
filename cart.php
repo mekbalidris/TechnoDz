@@ -92,7 +92,7 @@ include __DIR__ . '/includes/header.php';
         $line_total = $unit_price * $qty;
         $total     += $line_total;
     ?>
-        <tr>
+        <tr data-cart-row data-pid="<?= h($pid) ?>">
             <td>
                 <img
                     class="cart-thumb"
@@ -106,7 +106,7 @@ include __DIR__ . '/includes/header.php';
             </td>
             <td><?= h(money($unit_price)) ?></td>
             <td>
-                <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php" class="cart-qty-form">
+                <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php" class="cart-qty-form js-cart-qty-form">
                     <input type="hidden" name="action" value="update">
                     <input type="hidden" name="product_id" value="<?= h($pid) ?>">
                     <input
@@ -118,9 +118,9 @@ include __DIR__ . '/includes/header.php';
                     <button type="submit" class="btn"><i class="bi bi-arrow-repeat"></i> Update</button>
                 </form>
             </td>
-            <td><?= h(money($line_total)) ?></td>
+            <td data-line-total="<?= h($pid) ?>"><?= h(money($line_total)) ?></td>
             <td>
-                <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php" class="cart-remove-form">
+                <form method="post" action="<?= h(BASE_URL) ?>/cart_action.php" class="cart-remove-form js-cart-remove-form">
                     <input type="hidden" name="action" value="remove">
                     <input type="hidden" name="product_id" value="<?= h($pid) ?>">
                     <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i> Remove</button>
@@ -131,7 +131,7 @@ include __DIR__ . '/includes/header.php';
     </tbody>
 </table>
 
-<p class="cart-total"><strong>Total: <?= h(money($total)) ?></strong></p>
+<p class="cart-total" data-cart-total><strong>Total: <span data-cart-total-value><?= h(money($total)) ?></span></strong></p>
 
 <p>
     <a href="<?= h(BASE_URL) ?>/index.php" class="btn"><i class="bi bi-arrow-left"></i> Continue shopping</a>
