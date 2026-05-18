@@ -168,7 +168,9 @@
                         var pid = form.querySelector('input[name="product_id"]').value;
                         var cell = document.querySelector('[data-line-total="' + pid + '"]');
                         if (cell && json.line_totals && json.line_totals[pid] !== undefined) {
-                            cell.textContent = '$' + Number(json.line_totals[pid]).toFixed(2);
+                            // Server returns USD; format as DZD just like money() does in PHP.
+                            var dzd = Math.round(Number(json.line_totals[pid]) * 260);
+                            cell.textContent = dzd.toLocaleString('en-US') + ' DZD';
                         }
                         // Update the overall total.
                         var totalEl = document.querySelector('[data-cart-total-value]');

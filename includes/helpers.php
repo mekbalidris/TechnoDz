@@ -9,10 +9,16 @@ function h($s) {
 }
 
 /**
- * Format a numeric amount as a money string, e.g. "$1,234.56".
+ * Format a numeric amount as a DZD price string.
+ *
+ * The catalog stores prices in USD; we convert to Algerian Dinar by
+ * multiplying by 260 and formatting with thousands separators.
+ * Example: 1999.99 -> "519 997 DZD".
  */
 function money($n) {
-    return '$' . number_format((float)$n, 2);
+    $dzd = (float)$n * 260;
+    // Round to whole dinars - DZD is rarely displayed with subunits.
+    return number_format($dzd, 0, '.', ',') . ' DZD';
 }
 
 /**

@@ -77,7 +77,7 @@ if ($cat_q) {
     <section class="hero hero-split">
         <div class="hero-copy">
             <span class="hero-eyebrow"><i class="bi bi-lightning-charge-fill"></i> Build smarter</span>
-            <h1>Power your next build at <span class="hero-accent">Nexus Shop</span>.</h1>
+            <h1>Power your next build at <span class="hero-accent">TechnoDz</span></h1>
             <p>GPUs, CPUs, peripherals and more from the brands you trust. Discover today's deals, drop them into your cart, and check out in seconds.</p>
             <div class="hero-actions">
                 <a href="#products" class="btn btn-primary"><i class="bi bi-grid-fill"></i> Shop now</a>

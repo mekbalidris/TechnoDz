@@ -69,14 +69,14 @@ if (isset($conn) && $conn instanceof mysqli) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Nexus Shop</title>
+    <title>TechnoDz</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?= h(BASE_URL) ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?= h(BASE_URL) ?>/assets/css/style.css?v=<?= h(@filemtime(__DIR__ . '/../assets/css/style.css') ?: time()) ?>">
 </head>
 <body>
 <header class="site-header">
     <div class="container site-header-inner">
-        <a class="brand" href="<?= h(BASE_URL) ?>/index.php">Nexus Shop</a>
+        <a class="brand" href="<?= h(BASE_URL) ?>/index.php">TechnoDz</a>
 
         <nav class="site-nav">
             <a href="<?= h(BASE_URL) ?>/index.php"><i class="bi bi-house-door"></i> Home</a>
