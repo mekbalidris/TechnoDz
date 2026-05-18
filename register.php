@@ -6,9 +6,6 @@ require_once __DIR__ . '/includes/helpers.php';
 
 cart_load();
 
-// Form values to render. Username/email are preserved on re-render after a
-// failed POST so the visitor doesn't have to re-type them; password is
-// deliberately NOT preserved (Req 4.1, 4.2).
 $username = '';
 $email    = '';
 $error    = '';
@@ -18,8 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email    = trim((string)($_POST['email'] ?? ''));
     $pwd      = (string)($_POST['password'] ?? '');
 
-    // Required-field + format validation. Keep messages generic enough to
-    // re-render once and let the user fix any of them.
+    // basic checks
     if ($username === '' || $email === '' || $pwd === '') {
         $error = 'All fields are required';
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -27,9 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif (strlen($pwd) < 6) {
         $error = 'Password must be at least 6 characters';
     } else {
-        // Duplicate check: a single prepared SELECT with bound strings
-        // covers both username and email collisions (Req 4.2). Both columns
-        // are also UNIQUE in the schema, so this is belt + suspenders.
+        // check if email or username is already used
         $stmt = $conn->prepare(
             'SELECT id FROM users WHERE username = ? OR email = ? LIMIT 1'
         );
@@ -43,8 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             $stmt->close();
 
-            // password_hash with PASSWORD_DEFAULT is the bcrypt-by-default
-            // path PHP recommends; never store plaintext (Req 4.1, 11.2).
+            // hash the password before storing
             $hash = password_hash($pwd, PASSWORD_DEFAULT);
 
             $ins = $conn->prepare(
@@ -54,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ins->execute();
             $ins->close();
 
-            // Send the new user to the login page to authenticate.
             redirect('/login.php');
         }
     }

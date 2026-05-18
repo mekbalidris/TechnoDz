@@ -1,19 +1,11 @@
 <?php
-// Admin product list.
-//
-// Shows every product in a single table joined to its category, with edit
-// and delete action buttons per row. Access is gated through require_admin()
-// so unauthenticated visitors get bounced to /admin/login.php before any
-// HTML is sent (Req 5.2). The SELECT below has no parameters but still uses
-// prepare/execute for consistency with the rest of the admin CRUD path
-// (Req 9.5).
-
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
 require_admin();
 
+// load all products with their category name
 $sql = 'SELECT p.id, p.name, p.price, p.image, p.category_id, '
      . 'c.name AS category_name '
      . 'FROM products p '

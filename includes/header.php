@@ -1,21 +1,5 @@
 <?php
-// Public site header.
-//
-// Included from public pages (index.php, product.php, cart.php, login.php,
-// register.php, checkout.php, order_confirm.php) AFTER the shared layer
-// (db.php, auth.php, cart.php, helpers.php) has been required. We rely on:
-//   - $conn         (mysqli, from db.php)
-//   - is_logged_in(), current_user_id() (auth.php)
-//   - h() (helpers.php)
-//   - $_SESSION['cart'] hydrated by cart_load() in the caller
-//   - BASE_URL (config.php)
-//
-// The caller is responsible for calling cart_load() before including this
-// file so the cart count in the nav is accurate.
-
-// Resolve the logged-in user's display name with a one-shot prepared SELECT.
-// Cached in a static so multiple calls (or repeated includes during testing)
-// don't re-hit the database for the same request.
+// load the username for the nav (only when logged in)
 if (!function_exists('header_current_username')) {
     function header_current_username() {
         static $cached_uid = null;
@@ -41,7 +25,7 @@ if (!function_exists('header_current_username')) {
     }
 }
 
-// Cart line count (sum of quantities) for the nav badge.
+// total items in cart for the badge
 $cart_count = 0;
 if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     foreach ($_SESSION['cart'] as $qty) {
@@ -49,11 +33,11 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     }
 }
 
-// Preserve current search inputs so the form re-renders with the active filter.
+// keep the search inputs after a search
 $search_q = isset($_GET['q']) ? (string)$_GET['q'] : '';
 $selected_category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0;
 
-// Load categories for the filter dropdown.
+// load categories list
 $categories = [];
 if (isset($conn) && $conn instanceof mysqli) {
     $cat_res = $conn->query('SELECT id, name FROM categories ORDER BY name');

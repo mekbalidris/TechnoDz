@@ -1,28 +1,17 @@
 <?php
-// Admin: edit product (form + handler).
-//
-// GET  ?id=N : fetches the row and renders the form populated with the
-//              product values plus a categories dropdown.
-// POST       : validates the same fields as product_add.php and runs a
-//              prepared UPDATE. The image file is optional on edit; a
-//              missing upload keeps the existing filename.
-//
-// Access is gated through require_admin() so unauthenticated visitors are
-// bounced to /admin/login.php before any HTML is sent (Req 5.2 / 9.5).
-
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
 require_admin();
 
-// Pull the id from either the query string (GET form) or the POST body.
+// get the product id from GET or POST
 $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);
 if ($id <= 0) {
     redirect('/admin/products.php');
 }
 
-// Fetch the product row with a prepared statement (Req 9.5).
+// load the product
 $stmt = $conn->prepare(
     'SELECT id, name, description, price, image, category_id '
     . 'FROM products WHERE id = ?'
@@ -42,7 +31,7 @@ if (!$product) {
     exit;
 }
 
-// Categories for the dropdown (Req 10.5: each product picks one category).
+// load categories for the dropdown
 $catStmt = $conn->prepare('SELECT id, name FROM categories ORDER BY name');
 $catStmt->execute();
 $catRes = $catStmt->get_result();
@@ -52,7 +41,7 @@ while ($row = $catRes->fetch_assoc()) {
 }
 $catStmt->close();
 
-// Form state seeded from the product row. POST overrides these below.
+// fill form fields from the product
 $name        = (string)$product['name'];
 $description = (string)$product['description'];
 $price       = (string)$product['price'];
@@ -62,24 +51,22 @@ $image       = (string)$product['image'];
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Read submitted values, trimming the strings.
     $name        = trim((string)($_POST['name'] ?? ''));
     $description = trim((string)($_POST['description'] ?? ''));
     $price       = trim((string)($_POST['price'] ?? ''));
     $category_id = (int)($_POST['category_id'] ?? 0);
 
-    // Validate text fields.
+    // validate text fields
     if ($name === '') {
         $error = 'Name is required';
     } elseif ($description === '') {
         $error = 'Description is required';
     } elseif (!is_numeric($price) || (float)$price <= 0) {
-        // Req 9.4: a non-positive or non-numeric price is rejected.
         $error = 'Price must be a positive number';
     } elseif ($category_id <= 0) {
         $error = 'Category is required';
     } else {
-        // Confirm the chosen category actually exists.
+        // make sure the category exists
         $chk = $conn->prepare('SELECT id FROM categories WHERE id = ? LIMIT 1');
         $chk->bind_param('i', $category_id);
         $chk->execute();
@@ -92,11 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // Image handling. The field is optional on edit:
-    //   - UPLOAD_ERR_NO_FILE : keep the existing filename
-    //   - UPLOAD_ERR_OK      : validate MIME, move the file, use new name
-    //   - anything else      : surface as a validation error
-    $newImage = $image; // default: keep existing
+    // image is optional on edit: keep the old one if no new file
+    $newImage = $image;
 
     if ($error === '' && isset($_FILES['image'])) {
         $uploadErr = (int)$_FILES['image']['error'];
@@ -121,17 +105,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 if (!move_uploaded_file($tmp, $dest)) {
                     $error    = 'Failed to save uploaded image';
-                    $newImage = $image; // fall back to existing on failure
+                    $newImage = $image;
                 }
             }
         } elseif ($uploadErr !== UPLOAD_ERR_NO_FILE) {
-            // Any other upload error counts as a validation failure.
             $error = 'Image upload failed';
         }
     }
 
     if ($error === '') {
-        // Req 9.2 / 9.5: prepared UPDATE for the row.
+        // update the product row
         $priceFloat = (float)$price;
 
         $upd = $conn->prepare(
@@ -154,8 +137,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirect('/admin/products.php');
     }
 
-    // Validation failed: keep the new image filename in state so the
-    // thumbnail reflects whatever is actually persisted right now.
     $image = $newImage;
 }
 

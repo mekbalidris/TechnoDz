@@ -1,13 +1,4 @@
 <?php
-// Public shop landing / product listing.
-//
-// Supports two optional GET filters:
-//   - q             : free-text search matched against product name and description (LIKE)
-//   - category_id   : restricts results to a single category
-//
-// Both filters compose: when both are set, only products matching both are returned.
-// When the result set is empty, a "No products found" message is rendered instead of the grid.
-
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/cart.php';
@@ -15,13 +6,11 @@ require_once __DIR__ . '/includes/helpers.php';
 
 cart_load();
 
-// Read filter inputs. Trim the query and coerce category_id to int so we can
-// safely treat 0 as "no category filter".
+// read filter inputs from the url
 $q = isset($_GET['q']) ? trim((string)$_GET['q']) : '';
 $category_id = isset($_GET['category_id']) ? (int)$_GET['category_id'] : 0;
 
-// Build the SELECT dynamically. Every variable piece is bound through a
-// parameter - we never concatenate user input into SQL.
+// build the query with optional search and category filter
 $sql = 'SELECT p.id, p.name, p.description, p.price, p.image, p.category_id, '
      . '       c.name AS category_name '
      . 'FROM products p '
@@ -62,7 +51,7 @@ $stmt->close();
 
 include __DIR__ . '/includes/header.php';
 
-// Load categories for the filter strip below the hero.
+// load categories for the filter chips
 $filter_categories = [];
 $cat_q = $conn->query('SELECT id, name FROM categories ORDER BY name');
 if ($cat_q) {
@@ -92,7 +81,6 @@ if ($cat_q) {
     <h1 id="products"><i class="bi bi-grid-fill"></i> Products</h1>
 <?php endif; ?>
 
-<!-- Category filter strip (replaces the dropdown that used to live in the header) -->
 <section class="filter-strip" id="products">
     <div class="filter-strip-label">
         <i class="bi bi-funnel-fill"></i> <span>Categories</span>
@@ -120,8 +108,7 @@ if ($cat_q) {
         <?php if ($q !== ''): ?>results for &ldquo;<?= h($q) ?>&rdquo;<?php endif; ?>
         <?php if ($q !== '' && $category_id > 0): ?> in <?php endif; ?>
         <?php if ($category_id > 0):
-            // Look up the selected category's name with a prepared statement
-            // so we can show it in the active-filter line.
+            // get the selected category name to show in the banner
             $cat_stmt = $conn->prepare('SELECT name FROM categories WHERE id = ?');
             $cat_stmt->bind_param('i', $category_id);
             $cat_stmt->execute();
@@ -142,7 +129,7 @@ if ($cat_q) {
     <div class="grid">
         <?php foreach ($products as $p): ?>
             <?php
-                // Short description for the card (full description shows on the detail page).
+                // shorter description for the card
                 $desc = (string)$p['description'];
                 if (function_exists('mb_strimwidth')) {
                     $short_desc = mb_strimwidth($desc, 0, 140, '…', 'UTF-8');

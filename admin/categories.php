@@ -3,8 +3,6 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
-// Req 5.2: any unauthenticated visitor is bounced to admin/login.php
-// before any HTML is sent.
 require_admin();
 
 $error   = '';
@@ -12,13 +10,13 @@ $success = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_name'])) {
-        // Req 10.2 / 10.3: add a new category, but reject duplicates.
+        // add a new category
         $name = trim((string)$_POST['add_name']);
 
         if ($name === '') {
             $error = 'Category name is required';
         } else {
-            // Prepared SELECT to look up an existing row with the same name.
+            // check if the name already exists
             $stmt = $conn->prepare('SELECT id FROM categories WHERE name = ? LIMIT 1');
             $stmt->bind_param('s', $name);
             $stmt->execute();
@@ -37,9 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     } elseif (isset($_POST['delete_id'])) {
-        // Req 10.4: delete the category. The FK products.category_id has
-        // ON DELETE SET NULL, so any products that referenced this row are
-        // automatically unassigned by the database.
+        // delete a category (products that used it become uncategorized)
         $id = (int)$_POST['delete_id'];
 
         $del = $conn->prepare('DELETE FROM categories WHERE id = ?');
@@ -51,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Req 10.1: list every category from the categories table.
+// load all categories for the table
 $list = $conn->prepare('SELECT id, name FROM categories ORDER BY name');
 $list->execute();
 $res = $list->get_result();

@@ -4,9 +4,9 @@
 -- (per requirement 10.4). order_items snapshots product_name and unit_price
 -- so historical orders remain stable after later catalog edits (requirement 8.2).
 
-CREATE DATABASE IF NOT EXISTS nexus_shop
+CREATE DATABASE IF NOT EXISTS techno_dz
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE nexus_shop;
+USE techno_dz;
 
 CREATE TABLE users (
   id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

@@ -1,17 +1,4 @@
 <?php
-// Cart view page.
-//
-// Renders the visitor's cart as a table: one row per product line with an
-// inline form to update the quantity, a separate form to remove the line,
-// and a running total at the bottom. When the cart is empty we render a
-// short "Your cart is empty" message with a link back to the shop, per
-// Req 6.5.
-//
-// All product data is fetched in a single prepared SELECT ... WHERE id IN
-// (?, ?, ...) so we don't issue one query per line. The bound types are
-// all 'i' (integer) and the values come from array_keys($cart) - never
-// from raw user input - so SQL injection isn't possible here.
-
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/cart.php';
@@ -21,8 +8,7 @@ cart_load();
 
 $cart = isset($_SESSION['cart']) && is_array($_SESSION['cart']) ? $_SESSION['cart'] : [];
 
-// Empty-cart short-circuit (Req 6.5). We still wrap the message in the
-// public layout so the header/footer/nav stay consistent.
+// empty cart message
 if (empty($cart)) {
     include __DIR__ . '/includes/header.php';
     ?>
@@ -37,9 +23,7 @@ if (empty($cart)) {
     return;
 }
 
-// Fetch every product referenced by the cart in a single prepared SELECT.
-// Cast keys to int defensively so a tampered session can't smuggle a
-// non-integer through bind_param('i', ...).
+// get all products in the cart in one query
 $pids = array_map('intval', array_keys($cart));
 $placeholders = implode(',', array_fill(0, count($pids), '?'));
 $types = str_repeat('i', count($pids));
@@ -50,16 +34,13 @@ $stmt->bind_param($types, ...$pids);
 $stmt->execute();
 $res = $stmt->get_result();
 
-// Index by id so we can look up each cart line by its product_id when
-// rendering, regardless of the order MySQL returned the rows in.
+// store products by id so we can look them up easily
 $products = [];
 while ($row = $res->fetch_assoc()) {
     $products[(int)$row['id']] = $row;
 }
 $stmt->close();
 
-// Pre-compute the overall total in PHP so the table footer matches the
-// sum of the rendered line totals exactly (Req 6.4).
 $total = 0.0;
 
 include __DIR__ . '/includes/header.php';
@@ -82,8 +63,7 @@ include __DIR__ . '/includes/header.php';
     <?php foreach ($cart as $pid => $qty):
         $pid = (int)$pid;
         $qty = (int)$qty;
-        // Skip lines whose product was deleted from the catalog after it
-        // was added to the cart - we have no price or name to render.
+        // skip if the product was deleted
         if (!isset($products[$pid])) {
             continue;
         }

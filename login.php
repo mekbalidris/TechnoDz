@@ -1,16 +1,4 @@
 <?php
-// User login page.
-//
-// GET: renders the login form.
-// POST: looks up the user by email with a prepared statement, verifies the
-//       submitted password against the stored bcrypt hash with
-//       password_verify(), and on success starts a user session, merges
-//       any guest cart into the user's persistent cart, and redirects to
-//       the shop landing page. On failure the form re-renders with a
-//       generic "Invalid email or password" message - the same wording for
-//       both "no such email" and "wrong password" so we don't leak which
-//       accounts exist.
-
 require_once __DIR__ . '/includes/db.php';
 require_once __DIR__ . '/includes/auth.php';
 require_once __DIR__ . '/includes/cart.php';
@@ -28,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($email === '' || $pwd === '') {
         $error = 'Invalid email or password';
     } else {
-        // Prepared SELECT - never concatenate user input into SQL.
+        // look up the user by email
         $stmt = $conn->prepare('SELECT id, password_hash FROM users WHERE email = ? LIMIT 1');
         $stmt->bind_param('s', $email);
         $stmt->execute();
@@ -39,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($row && password_verify($pwd, $row['password_hash'])) {
             $user_id = (int)$row['id'];
             $_SESSION['user_id'] = $user_id;
-            // Sum the guest cart into the user's DB cart and clear the cookie.
+            // merge the guest cart into the user cart
             cart_merge_on_login($user_id);
             redirect('/index.php');
         }

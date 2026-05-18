@@ -1,18 +1,11 @@
-/* =====================================================================
-   Nexus Shop — stylesheet
-   Simple, student-level, but polished. Uses a small palette and a few
-   tasteful accents (soft shadows, hover lifts, indigo brand color).
-   ===================================================================== */
-
-/* ---------- Reset-ish + Base ---------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; }
 
 :root {
-    --brand:        #0891b2;   /* cyan-600  */
-    --brand-dark:   #0e7490;   /* cyan-700  */
-    --brand-soft:   #ecfeff;   /* cyan-50   */
-    --brand-soft-bd:#cffafe;   /* cyan-100  - subtle border on soft bg */
-    --brand-deep:   #155e75;   /* cyan-800  - readable text on soft bg */
+    --brand:        #0891b2;
+    --brand-dark:   #0e7490;
+    --brand-soft:   #ecfeff;
+    --brand-soft-bd:#cffafe;
+    --brand-deep:   #155e75;
     --brand-rgb:    8, 145, 178;
     --text:         #1f2330;
     --text-muted:   #6b7280;
@@ -56,7 +49,6 @@ h3 { font-size: 1.1rem; }
 p  { margin: 0 0 0.75rem 0; }
 img { max-width: 100%; height: auto; }
 
-/* ---------- Layout --------------------------------------------------- */
 .container {
     max-width: 1180px;
     margin: 0 auto;
@@ -64,10 +56,8 @@ img { max-width: 100%; height: auto; }
     width: 100%;
 }
 
-/* Body uses flex column; this pushes the footer to the bottom on short pages. */
 body > .container { flex: 1; }
 
-/* ---------- Public site header -------------------------------------- */
 .site-header {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border);
@@ -114,7 +104,6 @@ body > .container { flex: 1; }
 }
 .nav-user { color: var(--text-muted); font-style: normal; padding: 0.35rem 0; }
 
-/* Search form in the header */
 .search-form { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 .search-form input[type="text"],
 .search-form select {
@@ -138,7 +127,6 @@ body > .container { flex: 1; }
 }
 .search-form button:hover { background: var(--brand); }
 
-/* ---------- Admin nav (separate component) -------------------------- */
 .site-nav {
     background: var(--bg-card);
     border-bottom: 1px solid var(--border);
@@ -170,7 +158,6 @@ body > .container { flex: 1; }
     text-decoration: none;
 }
 
-/* ---------- Footer --------------------------------------------------- */
 .site-footer {
     border-top: 1px solid var(--border);
     margin-top: 3rem;
@@ -181,7 +168,6 @@ body > .container { flex: 1; }
     background: var(--bg-card);
 }
 
-/* ---------- Hero (homepage) ---------------------------------------- */
 .hero {
     background: linear-gradient(135deg, var(--brand) 0%, #14b8a6 100%);
     color: #fff;
@@ -193,7 +179,6 @@ body > .container { flex: 1; }
 .hero h1 { color: #fff; font-size: 2rem; margin-bottom: 0.5rem; }
 .hero p { color: rgba(255, 255, 255, 0.9); margin: 0; max-width: 60ch; }
 
-/* Active filter banner under the hero */
 .active-filters {
     background: var(--brand-soft);
     border: 1px solid var(--brand-soft-bd);
@@ -204,7 +189,6 @@ body > .container { flex: 1; }
 }
 .active-filters a { color: var(--brand-dark); font-weight: 500; }
 
-/* ---------- Product grid + cards ------------------------------------ */
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
@@ -264,7 +248,6 @@ body > .container { flex: 1; }
 }
 .card .btn { width: 100%; text-align: center; }
 
-/* ---------- Product detail page ------------------------------------ */
 .product-detail,
 .product-detail-grid {
     display: grid;
@@ -311,7 +294,6 @@ body > .container { flex: 1; }
     .product-detail-grid { grid-template-columns: 1fr; padding: 1.25rem; gap: 1.25rem; }
 }
 
-/* ---------- Buttons -------------------------------------------------- */
 .btn {
     display: inline-block;
     padding: 0.55rem 1.1rem;
@@ -344,7 +326,6 @@ body > .container { flex: 1; }
 }
 .btn-danger:hover { background: var(--err-bg); border-color: #fca5a5; color: var(--err); }
 
-/* ---------- Forms (general) ----------------------------------------- */
 form label {
     display: block;
     margin-top: 0.85rem;
@@ -377,7 +358,6 @@ input:focus, select:focus, textarea:focus {
     box-shadow: 0 0 0 3px rgba(var(--brand-rgb), 0.15);
 }
 
-/* ---------- Auth forms (login/register/admin login) ----------------- */
 .auth-form {
     max-width: 420px;
     margin: 2rem auto;
@@ -404,12 +384,9 @@ input:focus, select:focus, textarea:focus {
 .auth-form button[type="submit"]:hover { background: var(--brand-dark); border-color: var(--brand-dark); }
 .auth-form .hint, .auth-form small { color: var(--text-muted); display: block; margin-top: 0.75rem; text-align: center; }
 
-/* When an auth form is rendered, center the surrounding helper text + headings.
-   The page uses <h1> outside .auth-form, so we wrap the layout via a sibling rule. */
 body:has(.auth-form) > .container > h1 { text-align: center; margin-top: 1.5rem; }
 body:has(.auth-form) > .container > p:not(.flash):not(.hint) { text-align: center; color: var(--text-muted); }
 
-/* ---------- Cart helpers ------------------------------------------- */
 .cart-table { box-shadow: var(--shadow-sm); border-radius: var(--radius); overflow: hidden; }
 .cart-qty-input, .qty-input { width: 5rem; display: inline-block; }
 .cart-qty-form, .cart-remove-form { display: inline-flex; gap: 0.4rem; margin: 0; align-items: center; }
@@ -424,7 +401,6 @@ body:has(.auth-form) > .container > p:not(.flash):not(.hint) { text-align: cente
     color: var(--text);
 }
 
-/* ---------- Tables (admin + cart shared) --------------------------- */
 table {
     width: 100%;
     border-collapse: separate;
@@ -459,7 +435,6 @@ td.actions, .actions { white-space: nowrap; }
 
 .admin-thumb { border-radius: var(--radius-sm); background: #fafafa; padding: 4px; border: 1px solid var(--border-soft); }
 
-/* ---------- Flash messages ----------------------------------------- */
 .flash {
     padding: 0.85rem 1rem;
     margin: 1rem 0;
@@ -471,13 +446,10 @@ td.actions, .actions { white-space: nowrap; }
 .flash.ok  { color: var(--ok);  border-color: var(--ok-bd);  background: var(--ok-bg); }
 .flash.err { color: var(--err); border-color: var(--err-bd); background: var(--err-bg); }
 
-/* ---------- Small utilities ---------------------------------------- */
 .muted { color: var(--text-muted); }
 
-/* Better look for the "View" + "Add to cart" rows on the product detail */
 .product-detail-body form { margin-top: 0.5rem; }
 
-/* On narrow screens, let the header collapse nicely */
 @media (max-width: 720px) {
     .site-header-inner { gap: 0.75rem; }
     .site-header .site-nav { justify-content: flex-start; gap: 0.75rem; }
@@ -486,12 +458,6 @@ td.actions, .actions { white-space: nowrap; }
     .hero h1 { font-size: 1.5rem; }
 }
 
-
-/* ===================================================================
-   ICONIFIED COMPONENTS — added in the icons + redesign pass
-   =================================================================== */
-
-/* Inline icons in nav links and buttons get a touch of breathing room */
 .site-header .site-nav a i,
 .site-nav .nav-links a i,
 .btn i,
@@ -499,7 +465,6 @@ td.actions, .actions { white-space: nowrap; }
 h1 i, h2 i, h3 i,
 form label i { margin-right: 0.35rem; }
 
-/* ---------- Header search input with inline magnifier --------------- */
 .search-input-wrap {
     position: relative;
     display: flex;
@@ -519,7 +484,6 @@ form label i { margin-right: 0.35rem; }
     font-size: 0.95rem;
 }
 
-/* ---------- Cart badge in the nav ----------------------------------- */
 .cart-badge {
     display: inline-block;
     margin-left: 0.25rem;
@@ -533,7 +497,6 @@ form label i { margin-right: 0.35rem; }
     transform: translateY(-1px);
 }
 
-/* ---------- New split hero ----------------------------------------- */
 .hero-split {
     position: relative;
     overflow: hidden;
@@ -550,7 +513,6 @@ form label i { margin-right: 0.35rem; }
     border-radius: 18px;
     box-shadow: var(--shadow-lg);
 }
-/* Subtle decorative grid pattern (CSS only, no images required) */
 .hero-split::before {
     content: "";
     position: absolute;
@@ -642,7 +604,6 @@ form label i { margin-right: 0.35rem; }
     .hero-art img { max-height: 180px; }
 }
 
-/* ---------- Filter strip with category chips ----------------------- */
 .filter-strip {
     display: flex;
     align-items: center;
@@ -700,7 +661,6 @@ form label i { margin-right: 0.35rem; }
 }
 .chip.is-active:hover { background: var(--brand-dark); border-color: var(--brand-dark); color: #fff; }
 
-/* ---------- Empty state (cart, orders, etc.) ----------------------- */
 .empty-state {
     text-align: center;
     padding: 2.5rem 1rem;
@@ -717,7 +677,6 @@ form label i { margin-right: 0.35rem; }
     margin-bottom: 0.5rem;
 }
 
-/* ---------- Admin dashboard stat cards ----------------------------- */
 .stats-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
 .stat-card {
     text-align: center;
@@ -750,17 +709,10 @@ form label i { margin-right: 0.35rem; }
     margin: 0;
 }
 
-/* ---------- Trim search-form layout now that select is gone -------- */
 .search-form { gap: 0.5rem; align-items: center; }
 .search-form button { white-space: nowrap; }
 
-/* The category pill on product detail no longer says "Category:" plain */
 .product-category i { margin-right: 0.3rem; }
-
-
-/* ===================================================================
-   AJAX UI: toast notifier + badge pulse
-   =================================================================== */
 
 .toast-container {
     position: fixed;
@@ -796,7 +748,6 @@ form label i { margin-right: 0.35rem; }
 .toast-err i { color: var(--err); }
 .toast-show { transform: translateX(0); opacity: 1; }
 
-/* Cart badge pulse on update */
 @keyframes cart-badge-pulse-kf {
     0%   { transform: translateY(-1px) scale(1); }
     50%  { transform: translateY(-1px) scale(1.25); }

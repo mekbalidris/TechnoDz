@@ -20,7 +20,7 @@
 -- of this file. NEVER store the plaintext password in this file.
 -- =====================================================================
 
-USE nexus_shop;
+USE techno_dz;
 
 -- ---------------------------------------------------------------------
 -- Categories

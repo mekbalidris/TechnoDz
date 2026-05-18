@@ -1,0 +1,349 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{parskip}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+
+% --- color palette (matches the website cyan/teal theme) ---
+\definecolor{brand}{HTML}{0891B2}      % cyan-600
+\definecolor{branddark}{HTML}{0E7490}  % cyan-700
+\definecolor{brandsoft}{HTML}{ECFEFF}  % cyan-50
+\definecolor{brandsoftbd}{HTML}{CFFAFE}% cyan-100
+\definecolor{ink}{HTML}{1F2330}
+\definecolor{muted}{HTML}{6B7280}
+
+\hypersetup{
+    colorlinks=true,
+    urlcolor=branddark,
+    linkcolor=branddark
+}
+
+% --- section styling ---
+\titleformat{\section}
+    {\Large\bfseries\color{branddark}}
+    {\thesection.}{0.6em}{}
+\titleformat{\subsection}
+    {\normalsize\bfseries\color{ink}}
+    {\thesubsection.}{0.5em}{}
+
+\titlespacing*{\section}{0pt}{1.2em}{0.5em}
+\titlespacing*{\subsection}{0pt}{0.8em}{0.3em}
+
+\setlist[itemize]{leftmargin=1.3em, itemsep=2pt, topsep=2pt}
+
+% --- header / footer for content pages ---
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\small\color{muted}TechnoDz -- Design Report}
+\fancyfoot[R]{\small\color{muted}\thepage}
+
+% --- handy "info" colored box ---
+\newtcolorbox{infobox}[1][]{
+    colback=brandsoft,
+    colframe=brand,
+    boxrule=0.4pt,
+    arc=3pt,
+    left=8pt, right=8pt, top=6pt, bottom=6pt,
+    fonttitle=\bfseries\color{white},
+    coltitle=white,
+    colbacktitle=brand,
+    title=#1
+}
+
+\begin{document}
+
+% ==========================================================
+% =====================   COVER PAGE   =====================
+% ==========================================================
+\thispagestyle{empty}
+
+% top color band
+\noindent\colorbox{brand}{%
+    \begin{minipage}[t][3.2cm][c]{\dimexpr\textwidth-2\fboxsep\relax}
+        \centering
+        {\color{white}\Huge\bfseries TechnoDz}\\[0.3em]
+        {\color{white}\large Mini E-Commerce Project -- Design Report}
+    \end{minipage}%
+}
+
+\vspace{1.5cm}
+
+% module + supervisor block
+\begin{center}
+    \begin{tcolorbox}[
+        colback=brandsoft,
+        colframe=brand,
+        boxrule=0.5pt,
+        arc=4pt,
+        width=0.85\textwidth,
+        left=12pt, right=12pt, top=10pt, bottom=10pt
+    ]
+    \centering
+    {\large\bfseries\color{branddark} Module}\\[0.2em]
+    {\Large PRAVAN -- Programmation Avanc\'ee}\\[1em]
+    {\large\bfseries\color{branddark} Supervisor}\\[0.2em]
+    {\Large Mr. BOUBENIA Mohamed}
+    \end{tcolorbox}
+\end{center}
+
+\vspace{1.2cm}
+
+% students table
+\begin{center}
+    {\large\bfseries\color{branddark} Project Team}
+\end{center}
+
+\vspace{0.4em}
+
+\renewcommand{\arraystretch}{1.6}
+\begin{center}
+\begin{tabular}{|>{\centering\arraybackslash}m{0.5cm}|>{\centering\arraybackslash}m{7cm}|>{\centering\arraybackslash}m{4.5cm}|}
+    \hline
+    \rowcolor{brand}
+    \textcolor{white}{\textbf{\#}} &
+    \textcolor{white}{\textbf{Full Name}} &
+    \textcolor{white}{\textbf{Matricule}} \\
+    \hline
+    1 & \underline{\hspace{6.5cm}} & \underline{\hspace{4cm}} \\
+    \hline
+    2 & \underline{\hspace{6.5cm}} & \underline{\hspace{4cm}} \\
+    \hline
+    3 & \underline{\hspace{6.5cm}} & \underline{\hspace{4cm}} \\
+    \hline
+\end{tabular}
+\end{center}
+\renewcommand{\arraystretch}{1.0}
+
+\vspace{1.5cm}
+
+% team number + date footer block
+\begin{center}
+    \begin{tabular}{ll}
+        \textbf{\color{branddark}Team Number:} & \underline{\hspace{4cm}} \\[0.6em]
+        \textbf{\color{branddark}Submission Date:} & \today \\
+    \end{tabular}
+\end{center}
+
+\vfill
+
+% bottom color band
+\noindent\colorbox{branddark}{%
+    \begin{minipage}[t][1.2cm][c]{\dimexpr\textwidth-2\fboxsep\relax}
+        \centering
+        {\color{white}\small Academic Year \the\year{} / \the\numexpr\year+1\relax \quad $\bullet$ \quad Mini-Project Report}
+    \end{minipage}%
+}
+
+\newpage
+
+% ==========================================================
+% ===================   REPORT BODY   ======================
+% ==========================================================
+\setcounter{page}{1}
+
+% short intro box at the very top
+\begin{infobox}[About this report]
+This document is a short design report for our mini e-commerce project.
+It briefly describes the goals, the tools we used, the structure of the
+code, the database, and the main features of the application.
+\end{infobox}
+
+% ----------------------------------------------------------
+\section{Project Overview}
+
+\textbf{TechnoDz} is a small online shop that sells computer parts (GPUs,
+CPUs, mice, headsets, RAM, SSDs, cooling). A visitor can browse the
+products, search and filter them, view a detailed product page, add items
+to a cart, register an account, log in or out, and place an order. An
+administrator can log in to a separate page to add, edit or delete
+products and categories.
+
+The project covers all the features asked for in the assignment: a shop
+page with descriptions and prices, a search filter, a detailed product
+page, a database, login and logout, a cart with cookies and sessions, and
+a separate admin login.
+
+% ----------------------------------------------------------
+\section{Tools and Technologies}
+
+We built the project on a simple LAMP-style stack on Windows with XAMPP.
+
+\begin{itemize}
+    \item \textbf{HTML} and \textbf{CSS} for the structure and the design
+        (white background, cyan theme, Bootstrap Icons for the icons).
+    \item \textbf{PHP} (procedural style, no framework) for the
+        server-side logic.
+    \item \textbf{JavaScript} for small things like the delete
+        confirmation, the toast notifications, and \textbf{AJAX} on the
+        cart.
+    \item \textbf{MySQL} as the database, managed through phpMyAdmin.
+\end{itemize}
+
+% ----------------------------------------------------------
+\section{Project Structure}
+
+The project lives under \texttt{xampp/htdocs/nexus\_shop/}.
+
+\begin{itemize}
+    \item \textbf{Public pages} (root): \texttt{index.php},
+        \texttt{product.php}, \texttt{cart.php},
+        \texttt{cart\_action.php}, \texttt{checkout.php},
+        \texttt{order\_confirm.php}, \texttt{login.php},
+        \texttt{register.php}, \texttt{logout.php}.
+    \item \textbf{Admin pages} (\texttt{/admin/}): \texttt{login.php},
+        \texttt{logout.php}, \texttt{index.php} (dashboard),
+        \texttt{products.php}, \texttt{product\_add.php},
+        \texttt{product\_edit.php}, \texttt{product\_delete.php},
+        \texttt{categories.php}.
+    \item \textbf{Shared code} (\texttt{/includes/}): \texttt{config.php},
+        \texttt{db.php}, \texttt{auth.php}, \texttt{cart.php},
+        \texttt{helpers.php}, \texttt{header.php}, \texttt{footer.php}.
+    \item \textbf{Assets}: \texttt{assets/css/style.css},
+        \texttt{assets/js/app.js}, and product images in
+        \texttt{assets/images/products/}.
+    \item \textbf{Database scripts}: \texttt{sql/schema.sql} and
+        \texttt{sql/seed.sql}.
+\end{itemize}
+
+% ----------------------------------------------------------
+\section{Database Design}
+
+The database is named \texttt{nexus\_shop} and uses InnoDB with utf8mb4.
+It has seven tables:
+
+\begin{itemize}
+    \item \texttt{users} -- public accounts
+        (id, username, email, password\_hash).
+    \item \texttt{admins} -- staff accounts
+        (id, username, password\_hash).
+    \item \texttt{categories} -- product groups (id, name).
+    \item \texttt{products} -- the catalog
+        (id, name, description, price, image, category\_id).
+    \item \texttt{cart\_items} -- saved cart for logged-in users
+        (user\_id, product\_id, quantity).
+    \item \texttt{orders} -- order header
+        (id, user\_id, total, created\_at).
+    \item \texttt{order\_items} -- order lines with a snapshot of the
+        product name and unit price at checkout, so old orders stay
+        correct even if the catalog changes later.
+\end{itemize}
+
+Foreign keys keep things consistent: deleting a category sets the
+\texttt{category\_id} of its products to \texttt{NULL}, and deleting a
+user also deletes their cart and orders.
+
+% ----------------------------------------------------------
+\section{Sessions, Cookies and Security}
+
+\subsection{Sessions and cookies}
+Both are required by the assignment, and we use them like this:
+\begin{itemize}
+    \item The \textbf{PHP session} stores \texttt{user\_id} for a normal
+        user and \texttt{admin\_id} for an admin. The two keys are kept
+        separate so an admin and a normal user cannot mix.
+    \item The session also holds the active cart while the visitor is
+        browsing.
+    \item A \textbf{cookie} (\texttt{nexus\_cart}) saves a guest's cart
+        between visits. When the guest logs in, the cookie cart is merged
+        into the user's saved cart in the database, and the cookie is
+        cleared.
+\end{itemize}
+
+\subsection{Security}
+\begin{itemize}
+    \item Every SQL query uses \textbf{prepared statements}
+        (mysqli with \texttt{bind\_param}). User input is never put
+        directly into SQL.
+    \item Passwords are stored with \texttt{password\_hash()} (bcrypt)
+        and checked with \texttt{password\_verify()}.
+    \item All output goes through an \texttt{h()} helper that calls
+        \texttt{htmlspecialchars()} to prevent XSS.
+    \item Admin pages call \texttt{require\_admin()} at the top to
+        redirect anyone who is not logged in as an admin.
+\end{itemize}
+
+% ----------------------------------------------------------
+\section{Main Features}
+
+\subsection{Shop and search}
+The home page (\texttt{index.php}) shows all products in a grid. The
+header has a search bar with a magnifier icon. Below the hero banner
+there is a strip of category chips (\textit{All}, GPU, CPU, Mouse, ...).
+Clicking a chip filters the grid; the active chip is highlighted. The
+search and the category filter work together.
+
+\subsection{Product detail}
+Clicking a card opens \texttt{product.php?id=N} which shows the full
+description, the price and an \emph{Add to cart} button. If the id does
+not exist, the page shows a clear ``Product not found'' message.
+
+\subsection{Cart}
+The cart has three layers:
+\begin{itemize}
+    \item Session: the working cart during the visit.
+    \item Cookie: keeps a guest cart between visits.
+    \item Database (\texttt{cart\_items}): saves the cart for logged-in
+        users across devices.
+\end{itemize}
+Prices are shown in \textbf{DZD} (we store the value once and multiply by
+260 in the \texttt{money()} helper).
+
+\subsection{Checkout and order}
+Only logged-in users can place an order. \texttt{checkout.php} re-reads
+the products from the database, computes the total, opens a transaction,
+inserts one row in \texttt{orders} and one row in \texttt{order\_items}
+per cart line, commits, then empties the cart and shows
+\texttt{order\_confirm.php} with the order id.
+
+\subsection{Authentication}
+Users register with a username, email and password (validated and
+hashed). Login uses the email; logout clears the session and the guest
+cart cookie. The admin uses a separate login at \texttt{/admin/login.php}
+with a username and password (default seeded admin: \texttt{admin /
+admin123}).
+
+\subsection{Admin panel}
+The admin dashboard shows simple counts (products, categories, orders)
+and quick links. The admin can:
+\begin{itemize}
+    \item Add a product (with an image upload checked by MIME type, and a
+        positive price check).
+    \item Edit a product (with an optional new image).
+    \item Delete a product (POST-only, with a JavaScript confirm dialog).
+    \item Add or delete categories.
+\end{itemize}
+
+\subsection{AJAX}
+To make the site feel smooth, \emph{Add to cart}, \emph{Update quantity}
+and \emph{Remove} on the cart page use AJAX (\texttt{fetch} in vanilla
+JavaScript). The handler \texttt{cart\_action.php} returns JSON when the
+request comes from JavaScript, so the cart badge in the header and the
+line totals update without reloading the page. If JavaScript is off, the
+same forms still work the classic way.
+
+% ----------------------------------------------------------
+\section{Conclusion}
+
+The project shows the main steps of building a small e-commerce site:
+a clean database, separated public and admin areas, sessions and cookies
+for the cart, prepared statements for security, and a simple but pleasant
+interface. The code is kept simple on purpose so it stays easy to read
+and to demo.
+
+\vspace{0.5em}
+\begin{infobox}[Thank you]
+We thank Mr. BOUBENIA Mohamed for the guidance and the feedback during
+the PRAVAN module.
+\end{infobox}
+
+\end{document}

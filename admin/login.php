@@ -3,8 +3,7 @@ require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
-// NOTE: This is the admin login page itself, so we deliberately do NOT call
-// require_admin() here - that would cause an infinite redirect loop.
+// don't call require_admin() here, this IS the admin login page
 
 $error = '';
 $username = '';
@@ -16,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($username === '' || $password === '') {
         $error = 'Invalid username or password';
     } else {
-        // Prepared lookup against the admins table - no string concatenation.
+        // look up the admin by username
         $stmt = $conn->prepare('SELECT id, password_hash FROM admins WHERE username = ? LIMIT 1');
         $stmt->bind_param('s', $username);
         $stmt->execute();
@@ -25,15 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
 
         if ($row && password_verify($password, $row['password_hash'])) {
-            // Use a separate session key from $_SESSION['user_id'] so
-            // user and admin sessions stay isolated (Req 5.3).
+            // separate session key from regular users
             $_SESSION['admin_id'] = (int)$row['id'];
             header('Location: ' . BASE_URL . '/admin/index.php');
             exit;
         }
 
-        // Same generic message for both "no such user" and "wrong password"
-        // so we don't reveal which usernames exist.
         $error = 'Invalid username or password';
     }
 }

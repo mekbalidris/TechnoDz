@@ -1,23 +1,11 @@
 <?php
-// Admin product delete (POST-only).
-//
-// Receives a POST from the delete button on admin/products.php and removes
-// the matching row from the products table using a prepared DELETE
-// (Req 9.3, 9.5). The list page's button is wrapped in a form with
-// class="js-confirm-delete" so assets/js/app.js prompts the admin via
-// window.confirm() before the form actually submits. A non-POST request
-// is bounced straight back to the list page so the URL can't be used to
-// delete via GET.
-//
-// Access is gated by require_admin() before any work happens, so an
-// unauthenticated visitor is redirected to /admin/login.php (Req 5.2).
-
 require_once __DIR__ . '/../includes/db.php';
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/helpers.php';
 
 require_admin();
 
+// only allow POST so a GET url can't delete
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_URL . '/admin/products.php');
     exit;

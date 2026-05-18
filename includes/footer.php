@@ -1,8 +1,4 @@
-<?php
-// includes/footer.php
-// Closes the .container opened in header.php and finishes the page.
-?>
-        </div><!-- /.container -->
+        </div>
 
         <footer class="site-footer">
             <p>&copy; <?= date('Y') ?> TechnoDz &mdash; Student project</p>
