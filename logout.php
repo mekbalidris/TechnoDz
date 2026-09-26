@@ -10,3 +10,5 @@ unset($_SESSION['cart']);
 cart_clear_cookie();
 
 redirect('/index.php');
+
+
